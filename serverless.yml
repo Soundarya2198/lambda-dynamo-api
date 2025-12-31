@@ -1,0 +1,53 @@
+service: curd-dynamodb
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+  endpointType: REGIONAL
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+          Resource: "*"
+
+plugins:
+  - serverless-offline
+
+functions:
+  hello:
+    handler: src/handlers/hello.handler
+    events:
+      - http:
+          path: hello
+          method: get
+
+  getTicket:
+    handler: src/handlers/getTicket.handler
+    events:
+      - http:
+          path: tickets/{id}
+          method: get
+
+  createTicket:
+    handler: src/handlers/createTicket.handler
+    events:
+      - http:
+          path: tickets
+          method: post
+
+  deleteTicket:
+    handler: src/handlers/deleteTicket.handler
+    events:
+      - http:
+          path: tickets/{id}
+          method: delete
+
+  updateTicket:
+    handler: src/handlers/updateTicket.handler
+    events:
+      - http:
+          path: tickets/{id}
+          method: put
